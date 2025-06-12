@@ -35,12 +35,24 @@ public class Tile : MonoBehaviour
         gridPosition = pos;
         transform.position = new Vector3(pos.x * 0.96f, -pos.y * 0.96f, 0f);
 
-        int sortingOrder = gridPosition.y + sortingBase;
-        foreach (var sr in GetComponentsInChildren<SpriteRenderer>())
+        int baseOrder = gridPosition.y * 10 + sortingBase;
+
+        foreach (Transform child in transform)
         {
-            sr.sortingOrder = sortingOrder;
+            var sr = child.GetComponent<SpriteRenderer>();
+            if (sr == null) continue;
+
+            if (child.name.Contains("Grass"))
+                sr.sortingOrder = baseOrder + 2; // 最上层
+            else if (child.name.Contains("Dirt"))
+                sr.sortingOrder = baseOrder + 1;
+            else if (child.name.Contains("Rock"))
+                sr.sortingOrder = baseOrder + 1; // 和 Dirt 同层
+            else
+                sr.sortingOrder = baseOrder;
         }
     }
+
 
     public void ApplyConfig(TileTypeConfig config)
     {
