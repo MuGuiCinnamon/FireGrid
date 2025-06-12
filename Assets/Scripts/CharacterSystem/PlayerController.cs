@@ -7,6 +7,11 @@ public class PlayerController : MonoBehaviour
     public float gridSize = 0.96f; // 每格大小
     public Vector2Int gridPosition; // 当前玩家坐标（Tile Grid）
     private Tile currentTile;
+    public Sprite idleSprite;
+    public Sprite pressedSprite;
+
+    private SpriteRenderer spriteRenderer;
+    private Vector2Int gridPos;
 
     private bool isMoving = false;
 
@@ -39,6 +44,19 @@ public class PlayerController : MonoBehaviour
                 gridPosition = targetPos;
                 StartCoroutine(MoveToPosition());
             }
+        }
+        // 空格触发反馈
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            spriteRenderer.sprite = pressedSprite;
+
+            Tile currentTile = TileMapManager.Instance.GetTileAt(gridPos);
+            currentTile?.OnPlayerInteract();
+        }
+
+        if (Input.GetKeyUp(KeyCode.Space))
+        {
+            spriteRenderer.sprite = idleSprite;
         }
     }
 
