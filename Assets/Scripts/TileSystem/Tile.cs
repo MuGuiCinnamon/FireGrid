@@ -9,7 +9,7 @@ public class Tile : MonoBehaviour
 
     public TileType tileType;
     public bool isFlammable;
-    public bool isWalkable;
+    //public bool isWalkable;
 
     public List<GameObject> removableLayers = new();
     public List<GameObject> permanentLayers = new();
@@ -17,7 +17,15 @@ public class Tile : MonoBehaviour
     private Dictionary<GameObject, SpriteRenderer> removableRenderers = new();
 
     public Vector2Int gridPosition;
+    public bool isWalkable = true;
+    public bool isBurnable = true;
+    public bool hasFire = false;
     private int fireStartStep = -1;
+    void Start()
+    {
+        TileMapManager.Instance.RegisterTile(gridPosition, this);
+
+    }
 
     void Awake()
     {
@@ -26,6 +34,14 @@ public class Tile : MonoBehaviour
             var sr = obj.GetComponent<SpriteRenderer>();
             if (sr != null)
                 removableRenderers[obj] = sr;
+        }
+    }
+    public virtual void OnPlayerInteract()
+    {
+        if (isBurnable && !hasFire)
+        {
+            TileFireManager.Instance.CreateFireAt(gridPosition);
+            hasFire = true;
         }
     }
 
@@ -52,6 +68,7 @@ public class Tile : MonoBehaviour
                 sr.sortingOrder = baseOrder;
         }
     }
+    
 
 
     public void ApplyConfig(TileTypeConfig config)

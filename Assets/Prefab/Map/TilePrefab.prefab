@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 372681366310749198}
   - component: {fileID: 2159779029830582683}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: DirtLayer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -96,7 +96,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6504523347815502031}
   - component: {fileID: 4128253896834511451}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: RockLayer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -182,7 +182,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8714026493326672436}
   - component: {fileID: 8725424528505176834}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: GrassLayer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -268,9 +268,9 @@ GameObject:
   m_Component:
   - component: {fileID: 5421698377480714026}
   - component: {fileID: 5840778048410563897}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: TilePrefab
-  m_TagString: Untagged
+  m_TagString: Floor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -307,10 +307,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tileType: 0
   isFlammable: 1
-  isWalkable: 1
   removableLayers:
   - {fileID: 6133274370390396133}
   permanentLayers:
   - {fileID: 3128443693511447629}
   - {fileID: 3676662658267791736}
   gridPosition: {x: 0, y: 0}
+  isWalkable: 1
+  isBurnable: 1
+  hasFire: 0
