@@ -3,8 +3,7 @@ using UnityEngine;
 public class TileFireManager : MonoBehaviour
 {
     public static TileFireManager Instance;
-
-    [SerializeField] private GameObject firePrefab;
+    public GameObject firePrefab;
 
     private void Awake()
     {
@@ -13,19 +12,22 @@ public class TileFireManager : MonoBehaviour
             Destroy(gameObject);
             return;
         }
-
         Instance = this;
     }
 
-    public void CreateFireAt(Vector2Int position)
+    public void CreateFireAt(Vector2Int gridPosition)
     {
-        Tile tile = TileMapManager.Instance.GetTileAt(position);
-        if (tile == null || tile.hasFire) return;
+        Tile tile = TileMapManager.Instance.GetTileAt(gridPosition);
+        if (tile == null || !tile.isBurnable || tile.hasFire) return;
 
-        Vector3 spawnPos = new Vector3(position.x * 0.96f, -position.y * 0.96f, 0f);
-        GameObject fire = Instantiate(firePrefab, spawnPos, Quaternion.identity);
+        Vector3 worldPos = new Vector3(
+            gridPosition.x * TileFactory.GridSize,
+            -gridPosition.y * TileFactory.GridSize,
+            0
+        );
+
+        GameObject fire = Instantiate(firePrefab, worldPos, Quaternion.identity);
         fire.GetComponent<Fire>().Init(tile);
-
         tile.hasFire = true;
     }
 }

@@ -1,10 +1,9 @@
-using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine;
 
 public class TileMapManager : MonoBehaviour
 {
     public static TileMapManager Instance;
-
     private Dictionary<Vector2Int, Tile> tileMap = new Dictionary<Vector2Int, Tile>();
 
     private void Awake()
@@ -14,26 +13,17 @@ public class TileMapManager : MonoBehaviour
             Destroy(gameObject);
             return;
         }
-
         Instance = this;
     }
 
     public void RegisterTile(Vector2Int position, Tile tile)
     {
-        if (!tileMap.ContainsKey(position))
-        {
-            tileMap.Add(position, tile);
-        }
+        tileMap[position] = tile;
     }
 
     public Tile GetTileAt(Vector2Int position)
     {
-        tileMap.TryGetValue(position, out var tile);
+        tileMap.TryGetValue(position, out Tile tile);
         return tile;
-    }
-
-    public void ClearMap()
-    {
-        tileMap.Clear();
     }
 }

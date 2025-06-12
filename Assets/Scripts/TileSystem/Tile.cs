@@ -1,139 +1,61 @@
-using System.Collections.Generic;
 using UnityEngine;
-using System;
-
 
 public class Tile : MonoBehaviour
 {
     public enum TileType { Grass, Dirt, Rock }
 
     public TileType tileType;
-    public bool isFlammable;
-    //public bool isWalkable;
-
-    public List<GameObject> removableLayers = new();
-    public List<GameObject> permanentLayers = new();
-
-    private Dictionary<GameObject, SpriteRenderer> removableRenderers = new();
-
     public Vector2Int gridPosition;
     public bool isWalkable = true;
     public bool isBurnable = true;
     public bool hasFire = false;
-    private int fireStartStep = -1;
 
-
-    void Awake()
+    private void Awake()
     {
-        if (TileMapManager.Instance != null)
-        {
-            TileMapManager.Instance.RegisterTile(gridPosition, this);
-        }
-        foreach (var obj in removableLayers)
-        {
-            var sr = obj.GetComponent<SpriteRenderer>();
-            if (sr != null)
-                removableRenderers[obj] = sr;
-        }
+        // 确保Tile在网格上对齐
+        SnapToGrid();
     }
-    public virtual void OnPlayerInteract()
+
+    public void Initialize(Vector2Int gridPos)
+    {
+        gridPosition = gridPos;
+        SnapToGrid();
+    }
+    // 在 Tile.cs 中添加/修改这个方法
+    public void ApplyConfig(TileTypeConfig config)
+    {
+        if (config == null) return;
+        
+        // 根据配置设置属性
+        tileType = config.code switch
+        {
+            "G" => TileType.Grass,
+            "D" => TileType.Dirt,
+            "R" => TileType.Rock,
+            _ => TileType.Dirt
+        };
+        
+        isWalkable = config.isWalkable;
+        isBurnable = config.isFlammable;
+        
+        // 这里可以添加其他配置应用逻辑
+    }
+
+    private void SnapToGrid()
+    {
+        transform.position = new Vector3(
+            gridPosition.x * TileFactory.GridSize,
+            -gridPosition.y * TileFactory.GridSize,
+            0
+        );
+    }
+
+    public void OnPlayerInteract()
     {
         if (isBurnable && !hasFire)
         {
             TileFireManager.Instance.CreateFireAt(gridPosition);
             hasFire = true;
-
         }
-        Debug.Log("Player interacted with tile: " + gameObject.name);
-    }
-
-    public void Initialize(TileType type, Vector2Int pos, int sortingBase = 0)
-    {
-        tileType = type;
-        gridPosition = pos;
-        transform.position = new Vector3(pos.x * 0.96f, -pos.y * 0.96f, 0f);
-
-        int baseOrder = gridPosition.y * 10 + sortingBase;
-
-        foreach (Transform child in transform)
-        {
-            var sr = child.GetComponent<SpriteRenderer>();
-            if (sr == null) continue;
-
-            if (child.name.Contains("Grass"))
-                sr.sortingOrder = baseOrder + 2; // 最上层
-            else if (child.name.Contains("Dirt"))
-                sr.sortingOrder = baseOrder + 1;
-            else if (child.name.Contains("Rock"))
-                sr.sortingOrder = baseOrder + 1; // 和 Dirt 同层
-            else
-                sr.sortingOrder = baseOrder;
-        }
-    }
-    
-
-
-    public void ApplyConfig(TileTypeConfig config)
-    {
-        tileType = Enum.TryParse(config.code, out TileType result) ? result : TileType.Dirt;
-        isFlammable = config.isFlammable;
-        isWalkable = config.isWalkable;
-
-        foreach (Transform child in transform)
-        {
-            child.gameObject.SetActive(config.activeLayers.Contains(child.name));
-        }
-
-        removableLayers.Clear();
-        permanentLayers.Clear();
-
-        foreach (Transform child in transform)
-        {
-            if (!child.gameObject.activeSelf) continue;
-
-            if (child.name.Contains("Grass"))
-                removableLayers.Add(child.gameObject);
-            else
-                permanentLayers.Add(child.gameObject);
-        }
-    }
-
-    public void AttachFire(int playerStep)
-    {
-        if (!isFlammable) return;
-        fireStartStep = playerStep;
-    }
-
-    public void UpdateFireTransparency(int currentStep)
-    {
-        if (fireStartStep < 0) return;
-
-        int age = currentStep - fireStartStep;
-        float alpha = Mathf.Clamp01(1f - age / 6f);
-
-        foreach (var kvp in removableRenderers)
-        {
-            var sr = kvp.Value;
-            var c = sr.color;
-            sr.color = new Color(c.r, c.g, c.b, alpha);
-        }
-
-        if (age >= 6)
-        {
-            ClearFireEffect();
-        }
-    }
-
-    public void ClearFireEffect()
-    {
-        fireStartStep = -1;
-        isFlammable = false;
-
-        foreach (var obj in removableLayers)
-        {
-            obj.SetActive(false);
-        }
-
-        tileType = TileType.Dirt;
     }
 }
