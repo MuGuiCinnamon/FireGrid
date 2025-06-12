@@ -34,6 +34,9 @@ public class TileFactory : MonoBehaviour
                 var tile = tileGO.GetComponent<Tile>();
                 tile.Initialize(Tile.TileType.Dirt, pos); // 初始坐标
                 tile.ApplyConfig(tileDatabase.GetConfig(code));
+                
+                // 🔥 关键修改：立即注册到TileMapManager
+                //TileMapManager.Instance.RegisterTile(pos, tile);
             }
         }
     }

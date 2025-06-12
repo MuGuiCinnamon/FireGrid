@@ -21,14 +21,14 @@ public class Tile : MonoBehaviour
     public bool isBurnable = true;
     public bool hasFire = false;
     private int fireStartStep = -1;
-    void Start()
-    {
-        TileMapManager.Instance.RegisterTile(gridPosition, this);
 
-    }
 
     void Awake()
     {
+        if (TileMapManager.Instance != null)
+        {
+            TileMapManager.Instance.RegisterTile(gridPosition, this);
+        }
         foreach (var obj in removableLayers)
         {
             var sr = obj.GetComponent<SpriteRenderer>();
@@ -42,7 +42,9 @@ public class Tile : MonoBehaviour
         {
             TileFireManager.Instance.CreateFireAt(gridPosition);
             hasFire = true;
+
         }
+        Debug.Log("Player interacted with tile: " + gameObject.name);
     }
 
     public void Initialize(TileType type, Vector2Int pos, int sortingBase = 0)

@@ -11,14 +11,28 @@ public class PlayerController : MonoBehaviour
     public Sprite pressedSprite;
 
     private SpriteRenderer spriteRenderer;
-    private Vector2Int gridPos;
+
 
     private bool isMoving = false;
 
     void Start()
     {
+        spriteRenderer = GetComponent<SpriteRenderer>();
         Vector3 pos = transform.position;
         gridPosition = new Vector2Int(Mathf.RoundToInt(pos.x / gridSize), Mathf.RoundToInt(-pos.y / gridSize));
+        if (TileMapManager.Instance != null)
+        {
+            UpdatePosition();
+        }
+        else
+        {
+            // Try again after a short delay if manager isn't ready
+            StartCoroutine(DelayedInit());
+        }
+    }
+    private IEnumerator DelayedInit()
+    {
+        yield return new WaitForSeconds(0.1f);
         UpdatePosition();
     }
 
@@ -49,8 +63,9 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space))
         {
             spriteRenderer.sprite = pressedSprite;
+            Tile currentTile = TileMapManager.Instance.GetTileAt(gridPosition);
 
-            Tile currentTile = TileMapManager.Instance.GetTileAt(gridPos);
+
             currentTile?.OnPlayerInteract();
         }
 
