@@ -1,0 +1,108 @@
+using System.Collections.Generic;
+using UnityEngine;
+using System;
+
+
+public class Tile : MonoBehaviour
+{
+    public enum TileType { Grass, Dirt, Rock }
+
+    public TileType tileType;
+    public bool isFlammable;
+    public bool isWalkable;
+
+    public List<GameObject> removableLayers = new();
+    public List<GameObject> permanentLayers = new();
+
+    private Dictionary<GameObject, SpriteRenderer> removableRenderers = new();
+
+    public Vector2Int gridPosition;
+    private int fireStartStep = -1;
+
+    void Awake()
+    {
+        foreach (var obj in removableLayers)
+        {
+            var sr = obj.GetComponent<SpriteRenderer>();
+            if (sr != null)
+                removableRenderers[obj] = sr;
+        }
+    }
+
+    public void Initialize(TileType type, Vector2Int pos, int sortingBase = 0)
+    {
+        tileType = type;
+        gridPosition = pos;
+        transform.position = new Vector3(pos.x * 0.96f, -pos.y * 0.96f, 0f);
+
+        int sortingOrder = gridPosition.y + sortingBase;
+        foreach (var sr in GetComponentsInChildren<SpriteRenderer>())
+        {
+            sr.sortingOrder = sortingOrder;
+        }
+    }
+
+    public void ApplyConfig(TileTypeConfig config)
+    {
+        tileType = Enum.TryParse(config.code, out TileType result) ? result : TileType.Dirt;
+        isFlammable = config.isFlammable;
+        isWalkable = config.isWalkable;
+
+        foreach (Transform child in transform)
+        {
+            child.gameObject.SetActive(config.activeLayers.Contains(child.name));
+        }
+
+        removableLayers.Clear();
+        permanentLayers.Clear();
+
+        foreach (Transform child in transform)
+        {
+            if (!child.gameObject.activeSelf) continue;
+
+            if (child.name.Contains("Grass"))
+                removableLayers.Add(child.gameObject);
+            else
+                permanentLayers.Add(child.gameObject);
+        }
+    }
+
+    public void AttachFire(int playerStep)
+    {
+        if (!isFlammable) return;
+        fireStartStep = playerStep;
+    }
+
+    public void UpdateFireTransparency(int currentStep)
+    {
+        if (fireStartStep < 0) return;
+
+        int age = currentStep - fireStartStep;
+        float alpha = Mathf.Clamp01(1f - age / 6f);
+
+        foreach (var kvp in removableRenderers)
+        {
+            var sr = kvp.Value;
+            var c = sr.color;
+            sr.color = new Color(c.r, c.g, c.b, alpha);
+        }
+
+        if (age >= 6)
+        {
+            ClearFireEffect();
+        }
+    }
+
+    public void ClearFireEffect()
+    {
+        fireStartStep = -1;
+        isFlammable = false;
+
+        foreach (var obj in removableLayers)
+        {
+            obj.SetActive(false);
+        }
+
+        tileType = TileType.Dirt;
+    }
+}
