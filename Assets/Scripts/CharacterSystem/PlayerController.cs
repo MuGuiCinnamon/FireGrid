@@ -42,8 +42,8 @@ public class PlayerController : MonoBehaviour
 
         Vector2Int direction = Vector2Int.zero;
 
-        if (Input.GetKeyDown(KeyCode.W)) direction = Vector2Int.up;
-        else if (Input.GetKeyDown(KeyCode.S)) direction = Vector2Int.down;
+        if (Input.GetKeyDown(KeyCode.W)) direction = Vector2Int.down;
+        else if (Input.GetKeyDown(KeyCode.S)) direction = Vector2Int.up;
         else if (Input.GetKeyDown(KeyCode.A)) direction = Vector2Int.left;
         else if (Input.GetKeyDown(KeyCode.D)) direction = Vector2Int.right;
         else if (Input.GetKeyDown(KeyCode.Space)) TryTriggerTileEffect();
