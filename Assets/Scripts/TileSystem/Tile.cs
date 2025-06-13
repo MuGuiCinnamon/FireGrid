@@ -38,6 +38,23 @@ public class Tile : MonoBehaviour
     }
     public virtual void OnPlayerInteract()
     {
+        if (!isBurnable)
+    {
+        Debug.Log("Tile is not burnable");
+        return;
+    }
+
+    if (hasFire)
+    {
+        Debug.Log("Tile already has fire");
+        return;
+    }
+
+    if (TileFireManager.Instance == null)
+    {
+        Debug.LogError("TileFireManager.Instance is null!");
+        return;
+    }
         if (isBurnable && !hasFire)
         {
             TileFireManager.Instance.CreateFireAt(gridPosition);

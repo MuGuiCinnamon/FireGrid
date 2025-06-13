@@ -63,7 +63,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 3
-    m_ConditionEvent: BurnStep
+    m_ConditionEvent: Step
     m_EventTreshold: 5
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 8709798639237578409}
@@ -87,9 +87,9 @@ AnimatorStateTransition:
   m_PrefabAsset: {fileID: 0}
   m_Name: 
   m_Conditions:
-  - m_ConditionMode: 3
-    m_ConditionEvent: BurnStep
-    m_EventTreshold: 0
+  - m_ConditionMode: 6
+    m_ConditionEvent: Step
+    m_EventTreshold: 1
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -8634951130753804711}
   m_Solo: 0
@@ -113,7 +113,7 @@ AnimatorController:
   m_Name: fire_Controller
   serializedVersion: 5
   m_AnimatorParameters:
-  - m_Name: BurnStep
+  - m_Name: Step
     m_Type: 3
     m_DefaultFloat: 0
     m_DefaultInt: 0

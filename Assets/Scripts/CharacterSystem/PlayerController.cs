@@ -9,6 +9,8 @@ public class PlayerController : MonoBehaviour
     private Tile currentTile;
     public Sprite idleSprite;
     public Sprite pressedSprite;
+    private int playerStep = 0;
+
 
     private SpriteRenderer spriteRenderer;
 
@@ -64,9 +66,16 @@ public class PlayerController : MonoBehaviour
         {
             spriteRenderer.sprite = pressedSprite;
             Tile currentTile = TileMapManager.Instance.GetTileAt(gridPosition);
-
-
             currentTile?.OnPlayerInteract();
+            if (currentTile == null)
+            {
+                Debug.LogWarning($"No tile found at position {gridPosition}");
+                return; // 防止调用 null
+            }
+            if (currentTile != null && currentTile.isBurnable && !currentTile.hasFire)
+            {
+                TileFireManager.Instance.CreateFireAt(gridPosition);
+            }
         }
 
         if (Input.GetKeyUp(KeyCode.Space))
@@ -93,6 +102,14 @@ public class PlayerController : MonoBehaviour
         isMoving = false;
 
         UpdatePosition();
+        playerStep++;
+
+
+        // 让所有火焰 Step
+        foreach (var fire in FindObjectsByType<Fire>(FindObjectsInactive.Exclude, FindObjectsSortMode.None))
+        {
+            fire.Step();
+        }
     }
 
     private void UpdatePosition()
