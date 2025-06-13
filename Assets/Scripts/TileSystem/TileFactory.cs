@@ -40,6 +40,33 @@ public class TileFactory : MonoBehaviour
             }
         }
     }
+    private void OnDrawGizmos()
+    {
+        if (mapRows == null || mapRows.Length == 0) return;
+
+        float cellSize = 0.96f; // 与 Initialize() 中的间距一致
+        int width = mapRows[0].Length;
+        int height = mapRows.Length;
+
+        // 设置网格颜色
+        Gizmos.color = Color.gray;
+
+        // 绘制垂直线（列）
+        for (int x = 0; x <= width; x++)
+        {
+            Vector3 start = new Vector3(x * cellSize, 0, 0);
+            Vector3 end = new Vector3(x * cellSize, -height * cellSize, 0);
+            Gizmos.DrawLine(start, end);
+        }
+
+        // 绘制水平线（行）
+        for (int y = 0; y <= height; y++)
+        {
+            Vector3 start = new Vector3(0, -y * cellSize, 0);
+            Vector3 end = new Vector3(width * cellSize, -y * cellSize, 0);
+            Gizmos.DrawLine(start, end);
+        }
+    }
     
 
     private void ClearExistingTiles()
