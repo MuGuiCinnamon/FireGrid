@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 5595481700250553436}
   - component: {fileID: 5446574610185594899}
-  - component: {fileID: 3852689108924666887}
   m_Layer: 8
   m_Name: FirePrefab
   m_TagString: Fire
@@ -27,7 +26,7 @@ Transform:
   m_GameObject: {fileID: 811296564195147303}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0.9401279, y: -1.6693112, z: 0.075117424}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -45,25 +44,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9392b456bdcb841258bbb29ba16ee888, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!95 &3852689108924666887
-Animator:
-  serializedVersion: 7
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 811296564195147303}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 5175fd7648d074112b548d6d5d3d7bfb, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_AnimatePhysics: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
