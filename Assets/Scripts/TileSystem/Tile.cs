@@ -95,6 +95,7 @@ public class Tile : MonoBehaviour
         tileType = Enum.TryParse(config.code, out TileType result) ? result : TileType.Dirt;
         isFlammable = config.isFlammable;
         isWalkable = config.isWalkable;
+        isBurnable = isFlammable;
 
         foreach (Transform child in transform)
         {
