@@ -23,7 +23,7 @@ public class TileFireManager : MonoBehaviour
         if (tile == null || tile.hasFire) return;
 
         Vector3 spawnPos = new Vector3(position.x * 0.96f, -position.y * 0.96f, 0f);
-        GameObject fire = Instantiate(firePrefab, spawnPos, Quaternion.identity);
+        GameObject fire = Instantiate(firePrefab, spawnPos, Quaternion.identity, this.transform); 
         fire.GetComponent<Fire>().Init(tile);
 
         tile.hasFire = true;
