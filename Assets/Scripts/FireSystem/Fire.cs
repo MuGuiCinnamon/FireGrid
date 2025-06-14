@@ -20,6 +20,16 @@ public class Fire : MonoBehaviour
             animator.SetTrigger("Ready");
         }
     }
+    void OnEnable()
+    {
+        PlayerController.OnStep += Step;
+    }
+
+    void OnDisable()
+    {
+        PlayerController.OnStep -= Step;
+    }
+
 
     public void Step()
     {

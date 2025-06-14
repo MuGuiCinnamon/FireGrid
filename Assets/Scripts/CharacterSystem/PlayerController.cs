@@ -12,6 +12,8 @@ public class PlayerController : MonoBehaviour
     public Sprite pressedSprite;
     private int playerStep = 0;
     public int StepCount => playerStep;
+    public static event System.Action OnStep;
+
 
 
 
@@ -109,13 +111,14 @@ public class PlayerController : MonoBehaviour
 
         UpdatePosition();
         playerStep++;
+        OnStep?.Invoke();
 
 
         // 让所有火焰 Step
-        foreach (var fire in FindObjectsByType<Fire>(FindObjectsInactive.Exclude, FindObjectsSortMode.None))
-        {
-            fire.Step();
-        }
+        // foreach (var fire in FindObjectsByType<Fire>(FindObjectsInactive.Exclude, FindObjectsSortMode.None))
+        // {
+        //     fire.Step();
+        // }
     }
 
     private void UpdatePosition()

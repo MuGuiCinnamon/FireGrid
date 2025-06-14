@@ -130,10 +130,11 @@ public class Tile : MonoBehaviour
 
     public void UpdateFireTransparency(int currentStep)
     {
-        if (fireStartStep < 0) return;
+        // if (fireStartStep < 0) return;
 
-        int age = currentStep - fireStartStep;
-        float t = Mathf.Clamp01(age / 6f);
+        // int age = currentStep - fireStartStep;
+        // float t = Mathf.Clamp01(age / 6f);
+        float t = Mathf.Clamp01(currentStep / 6f);
 
         foreach (var kvp in removableRenderers)
         {
@@ -143,13 +144,13 @@ public class Tile : MonoBehaviour
             {
                 // 从白色逐渐变黑色（Lerp）
                 sr.color = Color.Lerp(Color.white, Color.black, t);
-                
+
             }
         }
-        Debug.Log($"🔥 Tile at {gridPosition} burning. Step={age}, Lerp={t}");
+        Debug.Log($"🔥 Tile at {gridPosition} burning. Step={currentStep}, Lerp={t}");
 
 
-        if (age >= 6)
+        if (currentStep >= 6)
         {
             ClearFireEffect();
         }
