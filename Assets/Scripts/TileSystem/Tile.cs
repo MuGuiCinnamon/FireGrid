@@ -25,10 +25,10 @@ public class Tile : MonoBehaviour
 
     void Awake()
     {
-        if (TileMapManager.Instance != null)
-        {
-            TileMapManager.Instance.RegisterTile(gridPosition, this);
-        }
+        // if (TileMapManager.Instance != null)
+        // {
+        //     TileMapManager.Instance.RegisterTile(gridPosition, this);
+        // }
         foreach (var obj in removableLayers)
         {
             var sr = obj.GetComponent<SpriteRenderer>();
@@ -85,6 +85,10 @@ public class Tile : MonoBehaviour
                 sr.sortingOrder = baseOrder + 1; // 和 Dirt 同层
             else
                 sr.sortingOrder = baseOrder;
+        }
+        if (TileMapManager.Instance != null)
+        {
+            TileMapManager.Instance.RegisterTile(gridPosition, this);
         }
     }
     
