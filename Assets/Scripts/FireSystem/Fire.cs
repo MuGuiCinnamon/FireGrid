@@ -13,6 +13,7 @@ public class Fire : MonoBehaviour
         burnStep = 0;
         // 可以播放 Fire_Ready 动画
         animator = GetComponent<Animator>();
+        //tile.AttachFire(step);
         if (animator != null)
         {
             //animator.SetInteger("Step", burnStep); // 播放 Fire_Ready
@@ -24,6 +25,7 @@ public class Fire : MonoBehaviour
     {
         if (isDying) return;
         burnStep++;
+        tile?.UpdateFireTransparency(burnStep);
         if (burnStep == 1)
         {
             animator.SetTrigger("On"); // 播放 fire_on，然后转为 fire_keep

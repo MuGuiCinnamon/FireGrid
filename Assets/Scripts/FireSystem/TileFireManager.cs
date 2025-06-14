@@ -27,6 +27,9 @@ public class TileFireManager : MonoBehaviour
         fire.transform.localScale = Vector3.one;
 
         fire.GetComponent<Fire>().Init(tile);
+        tile.AttachFire(PlayerController.Instance.StepCount);
+
+
         tile.hasFire = true;
     }
 }
