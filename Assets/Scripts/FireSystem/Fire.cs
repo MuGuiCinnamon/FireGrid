@@ -48,7 +48,36 @@ public class Fire : MonoBehaviour
             // 延迟执行销毁（等待 fire_off 播放完）
             StartCoroutine(DelayedDestroy());
         }
+        // 🔥🔥 蔓延逻辑
+        if (burnStep > 0 && burnStep % 3 == 0)
+        {
+            TrySpread();
+        }
     }
+    private void TrySpread()
+    {
+        if (tile == null) return;
+
+        Vector2Int[] directions = new Vector2Int[]
+        {
+            Vector2Int.up,
+            Vector2Int.down,
+            Vector2Int.left,
+            Vector2Int.right
+        };
+
+        foreach (var dir in directions)
+        {
+            Vector2Int checkPos = tile.gridPosition + dir;
+            Tile neighbor = TileMapManager.Instance.GetTileAt(checkPos);
+
+            if (neighbor != null && neighbor.isBurnable && !neighbor.hasFire)
+            {
+                TileFireManager.Instance.CreateFireAt(checkPos);
+            }
+        }
+    }
+
     private System.Collections.IEnumerator DelayedDestroy()
     {
         // 等待动画播放完成（假设 fire_off 是 0.5 秒）
