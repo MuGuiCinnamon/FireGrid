@@ -16,6 +16,12 @@ public class TileFactory : MonoBehaviour
     };
 
     [ContextMenu("🔧 生成Tile地图")]
+    
+    void Start()
+    {
+        GenerateMap(); // 运行时自动生成地图
+    }
+
     public void GenerateMap()
     {
         ClearExistingTiles();
@@ -27,14 +33,27 @@ public class TileFactory : MonoBehaviour
             {
                 string code = row[x].ToString();
                 Vector2Int pos = new Vector2Int(x, y);
+                Debug.Log($"正在生成 [{x},{y}] 类型:{code}");
 
                 var tileGO = Instantiate(tilePrefab, transform);
                 tileGO.name = $"Tile_{code}_{x}_{y}";
 
+
                 var tile = tileGO.GetComponent<Tile>();
                 tile.Initialize(Tile.TileType.Dirt, pos); // 初始坐标
-                tile.ApplyConfig(tileDatabase.GetConfig(code));
-                
+                //tile.ApplyConfig(tileDatabase.GetConfig(code));
+                TileTypeConfig config = tileDatabase.GetConfig(code);
+                if (config != null)
+                {
+                    tile.ApplyConfig(config);
+                    Debug.Log($"即将注册 [{pos}] 类型:{config.code}"); // 注册前确认
+                    //TileMapManager.Instance.RegisterTile(pos, tile);
+                }
+                else
+                {
+                    Debug.LogError($"无配置: {code}");
+                }
+
                 // 🔥 关键修改：立即注册到TileMapManager
                 //TileMapManager.Instance.RegisterTile(pos, tile);
             }

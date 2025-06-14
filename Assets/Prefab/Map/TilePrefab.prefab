@@ -16,7 +16,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &372681366310749198
 Transform:
   m_ObjectHideFlags: 0
@@ -188,7 +188,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8714026493326672436
 Transform:
   m_ObjectHideFlags: 0
@@ -314,5 +314,5 @@ MonoBehaviour:
   - {fileID: 3676662658267791736}
   gridPosition: {x: 0, y: 0}
   isWalkable: 1
-  isBurnable: 1
+  isBurnable: 0
   hasFire: 0

@@ -25,10 +25,10 @@ public class Tile : MonoBehaviour
 
     void Awake()
     {
-        if (TileMapManager.Instance != null)
-        {
-            TileMapManager.Instance.RegisterTile(gridPosition, this);
-        }
+        // if (TileMapManager.Instance != null)
+        // {
+        //     TileMapManager.Instance.RegisterTile(gridPosition, this);
+        // }
         foreach (var obj in removableLayers)
         {
             var sr = obj.GetComponent<SpriteRenderer>();
@@ -38,6 +38,23 @@ public class Tile : MonoBehaviour
     }
     public virtual void OnPlayerInteract()
     {
+        if (!isBurnable)
+    {
+        Debug.Log("Tile is not burnable");
+        return;
+    }
+
+    if (hasFire)
+    {
+        Debug.Log("Tile already has fire");
+        return;
+    }
+
+    if (TileFireManager.Instance == null)
+    {
+        Debug.LogError("TileFireManager.Instance is null!");
+        return;
+    }
         if (isBurnable && !hasFire)
         {
             TileFireManager.Instance.CreateFireAt(gridPosition);
@@ -69,6 +86,10 @@ public class Tile : MonoBehaviour
             else
                 sr.sortingOrder = baseOrder;
         }
+        if (TileMapManager.Instance != null)
+        {
+            TileMapManager.Instance.RegisterTile(gridPosition, this);
+        }
     }
     
 
@@ -78,6 +99,7 @@ public class Tile : MonoBehaviour
         tileType = Enum.TryParse(config.code, out TileType result) ? result : TileType.Dirt;
         isFlammable = config.isFlammable;
         isWalkable = config.isWalkable;
+        isBurnable = isFlammable;
 
         foreach (Transform child in transform)
         {
@@ -102,23 +124,33 @@ public class Tile : MonoBehaviour
     {
         if (!isFlammable) return;
         fireStartStep = playerStep;
+        Debug.Log($"✅ Tile {gridPosition} 开始燃烧于 Step {playerStep}");
+
     }
 
     public void UpdateFireTransparency(int currentStep)
     {
-        if (fireStartStep < 0) return;
+        // if (fireStartStep < 0) return;
 
-        int age = currentStep - fireStartStep;
-        float alpha = Mathf.Clamp01(1f - age / 6f);
+        // int age = currentStep - fireStartStep;
+        // float t = Mathf.Clamp01(age / 6f);
+        float t = Mathf.Clamp01(currentStep / 6f);
 
         foreach (var kvp in removableRenderers)
         {
+            var obj = kvp.Key;
             var sr = kvp.Value;
-            var c = sr.color;
-            sr.color = new Color(c.r, c.g, c.b, alpha);
-        }
+            if (obj.name.Contains("Grass"))
+            {
+                // 从白色逐渐变黑色（Lerp）
+                sr.color = Color.Lerp(Color.white, Color.black, t);
 
-        if (age >= 6)
+            }
+        }
+        Debug.Log($"🔥 Tile at {gridPosition} burning. Step={currentStep}, Lerp={t}");
+
+
+        if (currentStep >= 6)
         {
             ClearFireEffect();
         }
@@ -129,11 +161,24 @@ public class Tile : MonoBehaviour
         fireStartStep = -1;
         isFlammable = false;
 
-        foreach (var obj in removableLayers)
+        foreach (var kvp in removableRenderers)
         {
-            obj.SetActive(false);
+            var obj = kvp.Key;
+            var sr = kvp.Value;
+
+            if (obj.name.Contains("Grass"))
+            {
+                sr.color = Color.black;
+            }
         }
 
+        // foreach (var obj in removableLayers)
+        // {
+        //     obj.SetActive(false);
+        // }
+
         tileType = TileType.Dirt;
+        Debug.Log($"🔥 清理完火焰，隐藏图层并标记为 Dirt：{gridPosition}");
+
     }
 }

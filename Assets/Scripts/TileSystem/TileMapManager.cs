@@ -16,14 +16,23 @@ public class TileMapManager : MonoBehaviour
         }
 
         Instance = this;
+        Debug.Log("✅ TileMapManager 已初始化");
     }
 
     public void RegisterTile(Vector2Int position, Tile tile)
     {
-        if (!tileMap.ContainsKey(position))
+        // if (!tileMap.ContainsKey(position))
+        // {
+        //     tileMap.Add(position, tile);
+        // }
+        if (tileMap.ContainsKey(position))
         {
-            tileMap.Add(position, tile);
+            Debug.LogError($"位置 {position} 已注册过瓦片！");
+            return;
         }
+        
+        tileMap.Add(position, tile);
+        Debug.Log($"注册瓦片：{position} | 类型：{tile.tileType}", tile.gameObject);
     }
 
     public Tile GetTileAt(Vector2Int position)

@@ -4,21 +4,31 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    public static PlayerController Instance;
     public float gridSize = 0.96f; // 每格大小
     public Vector2Int gridPosition; // 当前玩家坐标（Tile Grid）
     private Tile currentTile;
     public Sprite idleSprite;
     public Sprite pressedSprite;
+    private int playerStep = 0;
+    public int StepCount => playerStep;
+    public static event System.Action OnStep;
+
+
+
 
     private SpriteRenderer spriteRenderer;
 
 
     private bool isMoving = false;
+    
 
     void Start()
     {
+        Instance = this;
         spriteRenderer = GetComponent<SpriteRenderer>();
         Vector3 pos = transform.position;
+
         gridPosition = new Vector2Int(Mathf.RoundToInt(pos.x / gridSize), Mathf.RoundToInt(-pos.y / gridSize));
         if (TileMapManager.Instance != null)
         {
@@ -64,9 +74,16 @@ public class PlayerController : MonoBehaviour
         {
             spriteRenderer.sprite = pressedSprite;
             Tile currentTile = TileMapManager.Instance.GetTileAt(gridPosition);
-
-
             currentTile?.OnPlayerInteract();
+            if (currentTile == null)
+            {
+                Debug.LogWarning($"No tile found at position {gridPosition}");
+                return; // 防止调用 null
+            }
+            if (currentTile != null && currentTile.isBurnable && !currentTile.hasFire)
+            {
+                TileFireManager.Instance.CreateFireAt(gridPosition);
+            }
         }
 
         if (Input.GetKeyUp(KeyCode.Space))
@@ -93,6 +110,15 @@ public class PlayerController : MonoBehaviour
         isMoving = false;
 
         UpdatePosition();
+        playerStep++;
+        OnStep?.Invoke();
+
+
+        // 让所有火焰 Step
+        // foreach (var fire in FindObjectsByType<Fire>(FindObjectsInactive.Exclude, FindObjectsSortMode.None))
+        // {
+        //     fire.Step();
+        // }
     }
 
     private void UpdatePosition()
