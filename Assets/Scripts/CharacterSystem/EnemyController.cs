@@ -60,6 +60,13 @@ public class EnemyController : MonoBehaviour
             Debug.Log("🔥 敌人接触火焰，被烧毁！");
             Destroy(gameObject);
         }
+        if (gridPosition == PlayerController.Instance.gridPosition)
+        {
+            Debug.Log("☠️ 敌人撞到玩家！");
+            UIManager.Instance?.ShowGameOver();
+            yield break;
+        }
+
     }
 
     private void UpdateFacingDirection()

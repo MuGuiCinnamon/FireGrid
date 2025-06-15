@@ -118,6 +118,15 @@ public class PlayerController : MonoBehaviour
             yield break;
         }
         EnemyManager.Instance?.StepAllEnemies();
+        foreach (var enemy in EnemyManager.Instance.GetAllEnemies())
+        {
+            if (enemy.gridPosition == gridPosition)
+            {
+                Debug.Log("☠️ 玩家与敌人碰撞！");
+                UIManager.Instance?.ShowGameOver();
+                yield break;
+            }
+        }
         OnStep?.Invoke();
 
 

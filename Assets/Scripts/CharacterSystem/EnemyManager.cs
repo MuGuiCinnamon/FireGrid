@@ -24,4 +24,9 @@ public class EnemyManager : MonoBehaviour
             enemy.MoveIfPossible();
         }
     }
+    public List<EnemyController> GetAllEnemies()
+    {
+        return enemies;
+    }
+
 }
