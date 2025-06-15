@@ -24,8 +24,7 @@ public class EnemyManager : MonoBehaviour
             enemy.MoveIfPossible();
         }
     }
-<<<<<<< Updated upstream
-=======
+
     public List<EnemyController> GetAllEnemies()
     {
         return enemies;
@@ -50,5 +49,4 @@ public class EnemyManager : MonoBehaviour
     
 
 
->>>>>>> Stashed changes
 }
