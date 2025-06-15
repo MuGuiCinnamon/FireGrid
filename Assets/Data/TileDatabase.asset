@@ -29,3 +29,7 @@ MonoBehaviour:
     - RockLayer
     isFlammable: 0
     isWalkable: 1
+  - code: E
+    activeLayers: []
+    isFlammable: 0
+    isWalkable: 0

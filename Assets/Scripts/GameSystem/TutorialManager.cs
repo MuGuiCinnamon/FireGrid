@@ -19,6 +19,8 @@ public class TutorialManager : MonoBehaviour
 
     private void Start()
     {
+        Debug.Log("✅ TutorialManager 已初始化！");
+
         ShowStep(step);
         PlayerController.OnStep += HandlePlayerStep; // 监听玩家移动
     }
@@ -30,13 +32,13 @@ public class TutorialManager : MonoBehaviour
         switch (index)
         {
             case 0:
-                tutorialText.text = "Welcome to the game! Press W/A/S/D to move one step.";
+                tutorialText.text = "Press W/A/S/D to move one step. Press space to set fire";
                 break;
             case 1:
-                tutorialText.text = "Great! You learned how to move! Now try pressing space to set fire 🔥";
+                tutorialText.text = "Some of the things here cannot be burned, while some can, such as you and zombies";
                 break;
             case 2:
-                tutorialText.text = "Perfect! You've mastered the basics. Good luck!";
+                tutorialText.text = "Time will flow along with your pace. Ok. Now kill all the zombies. Don't die.";
                 break;
             default:
                 tutorialPanel.SetActive(false); // 隐藏提示
@@ -46,15 +48,16 @@ public class TutorialManager : MonoBehaviour
 
     private void HandlePlayerStep()
     {
-        if (step == 0)
+        if (step >= 0)
         {
-            step++;
+            step = step + 1 ;
             ShowStep(step);
         }
     }
 
     public void OnPlayerUsedFire()
     {
+        Debug.Log("🔥 OnPlayerUsedFire() 被调用了");
         if (step == 1)
         {
             step++;

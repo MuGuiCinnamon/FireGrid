@@ -73,19 +73,27 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space))
         {
             spriteRenderer.sprite = pressedSprite;
+
             Tile currentTile = TileMapManager.Instance.GetTileAt(gridPosition);
-            currentTile?.OnPlayerInteract();
-            if (currentTile == null)
+
+            if (currentTile != null)
+            {
+                currentTile.OnPlayerInteract();
+
+                if (currentTile.isBurnable && !currentTile.hasFire)
+                {
+                    TileFireManager.Instance.CreateFireAt(gridPosition);
+                    TutorialManager.Instance?.OnPlayerUsedFire();
+                    Debug.Log("🧠 TutorialManager.Instance: " + TutorialManager.Instance);
+
+                }
+            }
+            else
             {
                 Debug.LogWarning($"No tile found at position {gridPosition}");
-                return; // 防止调用 null
-            }
-            if (currentTile != null && currentTile.isBurnable && !currentTile.hasFire)
-            {
-                TileFireManager.Instance.CreateFireAt(gridPosition);
-                TutorialManager.Instance?.OnPlayerUsedFire();
             }
         }
+
 
         if (Input.GetKeyUp(KeyCode.Space))
         {
