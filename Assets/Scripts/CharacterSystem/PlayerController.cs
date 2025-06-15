@@ -83,6 +83,7 @@ public class PlayerController : MonoBehaviour
             if (currentTile != null && currentTile.isBurnable && !currentTile.hasFire)
             {
                 TileFireManager.Instance.CreateFireAt(gridPosition);
+                TutorialManager.Instance?.OnPlayerUsedFire();
             }
         }
 
