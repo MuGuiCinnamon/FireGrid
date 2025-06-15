@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections.Generic; // 添加这行
 
 public class TileFireManager : MonoBehaviour
 {
@@ -31,5 +32,23 @@ public class TileFireManager : MonoBehaviour
 
 
         tile.hasFire = true;
+        // ✅ 先找出要被烧毁的敌人
+        List<EnemyController> toRemove = new List<EnemyController>();
+        foreach (var enemy in EnemyManager.Instance.GetAllEnemies())
+        {
+            if (enemy.gridPosition == position)
+            {
+                toRemove.Add(enemy);
+            }
+        }
+
+        // ✅ 统一移除
+        foreach (var enemy in toRemove)
+        {
+            Debug.Log("🔥 敌人被火焰烧毁（火焰蔓延过来）！");
+            EnemyManager.Instance.UnregisterEnemy(enemy);
+            Destroy(enemy.gameObject);
+        }
+
     }
 }
