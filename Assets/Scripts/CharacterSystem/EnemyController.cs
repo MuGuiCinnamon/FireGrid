@@ -55,6 +55,11 @@ public class EnemyController : MonoBehaviour
         isMoving = false;
 
         UpdateFacingDirection();
+        if (FireUtility.IsFireActiveAt(gridPosition))
+        {
+            Debug.Log("🔥 敌人接触火焰，被烧毁！");
+            Destroy(gameObject);
+        }
     }
 
     private void UpdateFacingDirection()

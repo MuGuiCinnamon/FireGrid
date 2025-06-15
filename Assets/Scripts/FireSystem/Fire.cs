@@ -6,6 +6,7 @@ public class Fire : MonoBehaviour
     private int burnStep = 0;
     private Animator animator;
     private bool isDying = false;
+    public Vector2Int GridPos => tile?.gridPosition ?? Vector2Int.zero;
 
     public void Init(Tile tileRef)
     {
@@ -28,6 +29,10 @@ public class Fire : MonoBehaviour
     void OnDisable()
     {
         PlayerController.OnStep -= Step;
+    }
+    public bool IsActive()
+    {
+        return burnStep >= 2 && burnStep < 6; // 火焰中间阶段
     }
 
 
