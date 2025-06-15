@@ -111,6 +111,7 @@ public class PlayerController : MonoBehaviour
 
         UpdatePosition();
         playerStep++;
+        EnemyManager.Instance?.StepAllEnemies();
         OnStep?.Invoke();
 
 
