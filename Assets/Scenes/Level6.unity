@@ -9866,38 +9866,13 @@ PrefabInstance:
       propertyPath: m_sharedMaterial
       value: 
       objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 3130620392870286954, guid: 4225ee95e98b4414e906c7d4bfd7723b, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: -21
-      objectReference: {fileID: 0}
-    - target: {fileID: 3130620392870286954, guid: 4225ee95e98b4414e906c7d4bfd7723b, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 120
-      objectReference: {fileID: 0}
     - target: {fileID: 3143530163358068776, guid: 4225ee95e98b4414e906c7d4bfd7723b, type: 3}
       propertyPath: m_Name
       value: UIManager
       objectReference: {fileID: 0}
-    - target: {fileID: 4520230373228600452, guid: 4225ee95e98b4414e906c7d4bfd7723b, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4779904704120975334, guid: 4225ee95e98b4414e906c7d4bfd7723b, type: 3}
-      propertyPath: m_text
-      value: Perhaps I should tell you? Once the grass has been burned, it can't
-        be burned again
-      objectReference: {fileID: 0}
-    - target: {fileID: 4779904704120975334, guid: 4225ee95e98b4414e906c7d4bfd7723b, type: 3}
-      propertyPath: m_fontSize
-      value: 30
-      objectReference: {fileID: 0}
-    - target: {fileID: 4779904704120975334, guid: 4225ee95e98b4414e906c7d4bfd7723b, type: 3}
-      propertyPath: m_fontSizeBase
-      value: 30
-      objectReference: {fileID: 0}
     - target: {fileID: 5483518546869274396, guid: 4225ee95e98b4414e906c7d4bfd7723b, type: 3}
       propertyPath: targetSceneName
-      value: Level5
+      value: Level6
       objectReference: {fileID: 0}
     - target: {fileID: 6398607460658981614, guid: 4225ee95e98b4414e906c7d4bfd7723b, type: 3}
       propertyPath: m_IsActive
