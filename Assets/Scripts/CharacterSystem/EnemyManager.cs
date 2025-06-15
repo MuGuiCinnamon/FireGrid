@@ -24,6 +24,8 @@ public class EnemyManager : MonoBehaviour
             enemy.MoveIfPossible();
         }
     }
+<<<<<<< Updated upstream
+=======
     public List<EnemyController> GetAllEnemies()
     {
         return enemies;
@@ -45,6 +47,8 @@ public class EnemyManager : MonoBehaviour
             UIManager.Instance?.ShowVictory(); // 你可以实现这个函数弹出胜利界面
         }
     }
+    
 
 
+>>>>>>> Stashed changes
 }
