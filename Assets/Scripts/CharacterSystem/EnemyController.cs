@@ -28,12 +28,59 @@ public class EnemyController : MonoBehaviour
 
         Vector2Int targetPos = gridPosition + moveDirection;
         Tile targetTile = TileMapManager.Instance.GetTileAt(targetPos);
+
+        // ✅ 当前方向可以走
         if (targetTile != null && targetTile.isWalkable)
         {
             StartCoroutine(MoveToPosition(targetPos));
+            return;
         }
-        // 若不能走，不动（可扩展为转弯）
+
+        // ✅ 当前方向走不通，尝试寻找其他方向
+        Vector2Int[] directions = new Vector2Int[]
+        {
+            Vector2Int.up,
+            Vector2Int.down,
+            Vector2Int.left,
+            Vector2Int.right
+        };
+
+        List<Vector2Int> validDirs = new List<Vector2Int>();
+        foreach (var dir in directions)
+        {
+            Vector2Int tryPos = gridPosition + dir;
+            Tile tryTile = TileMapManager.Instance.GetTileAt(tryPos);
+            if (tryTile != null && tryTile.isWalkable)
+            {
+                validDirs.Add(dir);
+            }
+        }
+
+        // ✅ 没有能走的路，原地站着
+        if (validDirs.Count == 0)
+        {
+            return;
+        }
+
+        // ✅ 有可走方向，选一个最靠近玩家的
+        Vector2Int playerPos = PlayerController.Instance.gridPosition;
+        Vector2Int bestDir = validDirs[0];
+        float bestDist = (gridPosition + bestDir - playerPos).sqrMagnitude;
+
+        foreach (var dir in validDirs)
+        {
+            float dist = (gridPosition + dir - playerPos).sqrMagnitude;
+            if (dist < bestDist)
+            {
+                bestDir = dir;
+                bestDist = dist;
+            }
+        }
+
+        moveDirection = bestDir; // ✅ 更新朝向
+        StartCoroutine(MoveToPosition(gridPosition + moveDirection));
     }
+
 
     private System.Collections.IEnumerator MoveToPosition(Vector2Int targetPos)
     {
