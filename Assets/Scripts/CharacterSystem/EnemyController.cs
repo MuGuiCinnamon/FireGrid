@@ -58,6 +58,7 @@ public class EnemyController : MonoBehaviour
         if (FireUtility.IsFireActiveAt(gridPosition))
         {
             Debug.Log("🔥 敌人接触火焰，被烧毁！");
+            EnemyManager.Instance.UnregisterEnemy(this);
             Destroy(gameObject);
         }
         if (gridPosition == PlayerController.Instance.gridPosition)

@@ -15,13 +15,14 @@ public class AutoSceneLoader : MonoBehaviour
             string sceneNameToLoad = string.IsNullOrEmpty(targetSceneName)
                 ? GetComponentInChildren<TMP_Text>()?.text
                 : targetSceneName;
-
+             Debug.Log("1Restart button clicked!");
             if (!string.IsNullOrEmpty(sceneNameToLoad))
             {
                 AudioManager.Instance.PlayButtonClickSE();
 
                 // 使用 AudioManager 的渐隐切换
                 AudioManager.Instance.ChangeSceneWithFade(sceneNameToLoad, targetBGMName);
+                Debug.Log("Restart button clicked!");
             }
             else
             {

@@ -20,6 +20,7 @@ public class TutorialManager : MonoBehaviour
     private void Start()
     {
         Debug.Log("✅ TutorialManager 已初始化！");
+        PlayerController.OnStep -= HandlePlayerStep; 
 
         ShowStep(step);
         PlayerController.OnStep += HandlePlayerStep; // 监听玩家移动
@@ -40,6 +41,9 @@ public class TutorialManager : MonoBehaviour
             case 2:
                 tutorialText.text = "Time will flow along with your pace. Ok. Now kill all the zombies. Don't die.";
                 break;
+            case 3:
+                tutorialText.text = "Pressing x can open and close the menu";
+                break;
             default:
                 tutorialPanel.SetActive(false); // 隐藏提示
                 break;
@@ -50,7 +54,7 @@ public class TutorialManager : MonoBehaviour
     {
         if (step >= 0)
         {
-            step = step + 1 ;
+            step = step + 1;
             ShowStep(step);
         }
     }
@@ -64,4 +68,9 @@ public class TutorialManager : MonoBehaviour
             ShowStep(step);
         }
     }
+    private void OnDestroy()
+    {
+        PlayerController.OnStep -= HandlePlayerStep;
+    }
+
 }

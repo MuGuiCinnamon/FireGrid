@@ -16,15 +16,17 @@ public class TileFactory : MonoBehaviour
     };
 
     [ContextMenu("🔧 生成Tile地图")]
-    
+
     void Start()
     {
         GenerateMap(); // 运行时自动生成地图
+        
     }
 
     public void GenerateMap()
     {
         ClearExistingTiles();
+        TileMapManager.Instance.ClearMap(); 
 
         for (int y = 0; y < mapRows.Length; y++)
         {

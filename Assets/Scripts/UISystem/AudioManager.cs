@@ -111,15 +111,19 @@ public class AudioManager : MonoBehaviour
         //StartCoroutine(FadeAndLoadScene(bgmSource, fadeDuration));
         if (ScreenFade.Instance != null)
         {
+            Debug.Log("ScreenFade available. Starting fade out...");
             ScreenFade.Instance.FadeOut(() =>
             {
+                Debug.Log("FadeOut complete. Now loading scene...");
                 StartCoroutine(FadeAndLoadScene(bgmSource, fadeDuration));
             });
         }
         else
         {
+            Debug.Log("ScreenFade is null. Loading scene directly...");
             StartCoroutine(FadeAndLoadScene(bgmSource, fadeDuration));
         }
+
     }
     #endregion
 
