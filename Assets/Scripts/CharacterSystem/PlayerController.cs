@@ -111,6 +111,22 @@ public class PlayerController : MonoBehaviour
 
         UpdatePosition();
         playerStep++;
+        if (FireUtility.IsFireActiveAt(gridPosition))
+        {
+            Debug.Log("🔥 玩家被烧毁！");
+            UIManager.Instance?.ShowGameOver(); // 你可以定义这个函数来弹窗
+            yield break;
+        }
+        EnemyManager.Instance?.StepAllEnemies();
+        foreach (var enemy in EnemyManager.Instance.GetAllEnemies())
+        {
+            if (enemy.gridPosition == gridPosition)
+            {
+                Debug.Log("☠️ 玩家与敌人碰撞！");
+                UIManager.Instance?.ShowGameOver();
+                yield break;
+            }
+        }
         OnStep?.Invoke();
 
 

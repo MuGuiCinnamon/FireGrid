@@ -46,9 +46,9 @@ TagManager:
   - name: Floor
     uniqueID: 2521135531
     locked: 0
-  - name: Fire
+  - name: Player
     uniqueID: 491131191
     locked: 0
-  - name: Player
+  - name: Fire
     uniqueID: 840335297
     locked: 0
